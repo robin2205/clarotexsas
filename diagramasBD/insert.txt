@@ -1,0 +1,74 @@
+-- -----------------------------------------------------
+-- Insert Tabla unidadesmedidas
+-- -----------------------------------------------------
+INSERT INTO `unidaddemedidas` (`idUnidaddeMedidas`, `descripcion`) VALUES (NULL, 'Unidad'), (NULL, 'Metros'), (NULL, 'Kilos')
+
+-- -----------------------------------------------------
+-- Insert Tabla perfiles
+-- -----------------------------------------------------
+INSERT INTO `perfil` (`idperfil`, `descripcion`) VALUES (NULL, 'admon'), (NULL, 'editor'), (NULL, 'consultor')
+
+-- -----------------------------------------------------
+-- Insert Tabla estados
+-- -----------------------------------------------------
+INSERT INTO `estados` (`idestados`, `descripcion`) VALUES (NULL, 'Ingresado'), (NULL, 'Disponible'), (NULL, 'Corte'), (NULL, 'Confección'),
+(NULL, 'Estampación Localizada'), (NULL, 'Sesgo'), (NULL, 'Entregado'), (NULL, 'Proceso Externo')
+
+-- -----------------------------------------------------
+-- Insert Tabla usuarios
+-- -----------------------------------------------------
+INSERT INTO `usuarios` (`cedula`, `nombre`, `email`, `usuario`, `password`, `perfil`) VALUES ('1017137664', 'Robinson Gallego Alzate', 'pineda2110@hotmail.com', 'rgallegoa', 'fifa2010', '2'), ('1111111111', 'Carlos Vasco', 'vasco.1019@gmail.com', 'cvasco10', 'cvasco10', '1')
+
+-- -----------------------------------------------------
+-- Insert Tabla tipoinventario
+-- -----------------------------------------------------
+INSERT INTO `tipoinventario` (`idtipoInventario`, `descripcion`) VALUES ('I', 'Insumos'), ('T', 'Telas')
+
+-- -----------------------------------------------------
+-- Insert Tabla telas
+-- -----------------------------------------------------
+INSERT INTO `telas` (`idtelas`, `referencia`, `descripcion`, `costo`) VALUES (NULL, 'T000001', 'Lycra Minotauro Fondo Entero', '19000'), (NULL, 'T000002', 'Franela Tania', '5800'), (NULL, 'T000003', 'Lycra Centauro F/E', '21000'), (NULL, 'T000004', 'Burda Sueños', '6500');
+
+-- -----------------------------------------------------
+-- Insert Tabla inventariostelas
+-- -----------------------------------------------------
+INSERT INTO `inventariotelas` (`idinventarioTelas`, `cantidad`, `disponible`) VALUES (NULL, '800', '800'), (NULL, '1300', '1300'), (NULL, '400', '400'), (NULL, '900', '900');
+
+-- -----------------------------------------------------
+-- Insert Tabla detallestelas
+-- -----------------------------------------------------
+INSERT INTO `detallestelas` (`iddetallesTelas`, `idTipo`, `idTela`, `idUniMedida`, `idInventario`, `idEstado`, `rendimiento`, `color`, `ancho`) VALUES (NULL, 'T', '1', '3', '1', '1', '3.5', 'Blanca', '1.62'), (NULL, 'T', '2', '2', '2', '2', NULL, 'Rosado', '1.70'),
+(NULL, 'T', '3', '3', '3', '1', '3.2', 'Gris Jaspe', '1.65'), (NULL, 'T', '4', '2', '4', '1', NULL, 'Azul Oscuro', '1.58');
+
+-- -----------------------------------------------------
+-- Insert Tabla insumos
+-- -----------------------------------------------------
+INSERT INTO `insumos` (`idinsumos`, `referencia`, `descripcion`, `costo`) VALUES (NULL, 'I000001', 'Botón marcado Bronzini', '9'), (NULL, 'I000002', 'Hiladilla 10MM Algogón/Poliester', '150'), (NULL, 'I000003', 'Etiqueta Marca Bronzini Niñas', '35'), (NULL, 'I000004', 'Marquilla Logo Bronzini Niñas', '42');
+
+-- -----------------------------------------------------
+-- Insert Tabla inventarioinsumos
+-- -----------------------------------------------------
+INSERT INTO `inventarioinsumos` (`idinventarioInsumos`, `cantidad`, `disponible`) VALUES (NULL, '600', '600'), (NULL, '450', '450'), (NULL, '3220', '3220'), (NULL, '220', '220'), (NULL, '440', '440'), (NULL, '912', '912'), (NULL, '833', '833'), (NULL, '445', '445');
+
+-- -----------------------------------------------------
+-- Insert Tabla detallesinsumos
+-- -----------------------------------------------------
+INSERT INTO `detallesinsumos` (`iddetallesInsumos`, `idTipo`, `idInsumo`, `idUniMedida`, `idInventario`, `idEstado`, `color`, `talla`) VALUES (NULL, 'I', '1', '1', '1', '1', 'Transparente', NULL), (NULL, 'I', '2', '2', '2', '2', 'Gris', NULL), (NULL, 'I', '3', '1', '3', '1', NULL, NULL), (NULL, 'I', '4', '1', '4', '1', NULL, '02'), (NULL, 'I', '4', '1', '5', '1', NULL, '04'), (NULL, 'I', '4', '1', '6', '1', NULL, '06'), (NULL, 'I', '4', '1', '7', '1', NULL, '08'), (NULL, 'I', '4', '1', '8', '1', NULL, '10');
+
+
+-- -----------------------------------------------------
+-- CONSULTAS
+-- -----------------------------------------------------
+1. SELECT * FROM tipoinventario INNER JOIN detallestelas ON tipoinventario.idtipoInventario=detallestelas.idTipo WHERE tipoinventario.idtipoInventario='T';
+2. SELECT * FROM tipoinventario INNER JOIN detallesinsumos ON tipoinventario.idtipoInventario=detallesinsumos.idTipo WHERE tipoinventario.idtipoInventario='I';
+3. SELECT * FROM tipoinventario INNER JOIN detallestelas ON tipoinventario.idtipoInventario=detallestelas.idTipo INNER JOIN telas ON detallestelas.idTela=telas.idtelas;
+4. SELECT * FROM tipoinventario INNER JOIN detallestelas ON tipoinventario.idtipoInventario=detallestelas.idTipo INNER JOIN telas ON detallestelas.idTela=telas.idtelas INNER JOIN inventariotelas ON detallestelas.idInventario=inventariotelas.idinventarioTelas;
+5. SELECT * FROM tipoinventario INNER JOIN detallestelas ON tipoinventario.idtipoInventario=detallestelas.idTipo INNER JOIN telas ON detallestelas.idTela=telas.idtelas INNER JOIN inventariotelas ON detallestelas.idInventario=inventariotelas.idinventarioTelas INNER JOIN unidaddemedidas ON detallestelas.idUniMedida=unidaddemedidas.idunidaddeMedidas;
+6. SELECT 
+tipoinventario.idtipoInventario,telas.referencia,telas.descripcion,telas.costo,unidaddemedidas.descripcion,detallestelas.rendimiento,detallestelas.color,detallestelas.ancho,inventariotelas.cantidad,inventariotelas.disponible ,estados.descripcion
+FROM tipoinventario,detallestelas 
+INNER JOIN telas ON detallestelas.idTela=telas.idtelas 
+INNER JOIN unidaddemedidas ON detallestelas.idUniMedida=unidaddemedidas.idunidaddeMedidas 
+INNER JOIN inventariotelas ON detallestelas.idInventario=inventariotelas.idinventarioTelas
+INNER JOIN estados ON detallestelas.idEstado=estados.idestados
+WHERE tipoinventario.idtipoInventario='T';
