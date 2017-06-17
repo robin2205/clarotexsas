@@ -25,7 +25,7 @@
 		<div class="btn-group col-md-12">
 			<button type="button" class="btn btn-info" id="adicionarColor"><i class="fa fa-plus"></i> Color</button>
 			<button type="button" class="btn btn-danger" id="quitarColor"><i class="fa fa-minus"></i> Quitar</button>
-		</div><br>
+		</div><br><br>
 	</div>
 	<div class="form-group col-md-6">
 		<label for="estadoTela">Estado</label>

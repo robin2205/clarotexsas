@@ -1,7 +1,4 @@
-// var _Consulta = '';
-// var Resultado1 = '';
-
-$(document).ready(function() {
+$(document).ready(function(){
     //Deshabilitamos el focus sobre los botones y campos
     $('button').focus(function(){
         this.blur();
@@ -9,10 +6,15 @@ $(document).ready(function() {
     //Cargamos las funciones que queremos desde el Principio
     TraerUMedidas();
     TraerEstados();
-    TraerColoresTelas();
 
 
     //ConsultaPrueba();
+});
+
+var cont=0;
+$("#adicionarColor").on('click',function(){
+    cont=cont+1;
+    TraerColoresTelas(cont);
 });
 
 //Esta función se encarga de pedir por medio de AJAX las unidades de Medida
@@ -52,7 +54,7 @@ function TraerEstados(){
 }
 
 //Esta función se encarga de pedir por medio de AJAX los colores de Telas
-function TraerColoresTelas(){
+function TraerColoresTelas(contador){
     var Datos=new Object();
     Datos["ConfigAjax"]=['POST','RespuestaAjax.php?mod=master&cmd=TraerColoresTelas','false'];
     Resultado=PeticionAjax(Datos);
@@ -60,11 +62,11 @@ function TraerColoresTelas(){
         select='';
         select+='<option value="">Seleccione una Opción...</option>';
         $.each(Resultado.Datos,function(indice,valor){
-            id=valor.id;
-            color=valor.color;
-            select+='<option value="'+id+'">'+color+'</option>';
+            idcolor=valor.id;
+            descolor=valor.color;
+            select+='<option value="'+idcolor+'">'+descolor+'</option>';
         });
-        $("#coloresTela").html(select);
+        $('#coloresTela'+contador).html(select);
     }
 }
 
@@ -139,15 +141,36 @@ function PeticionAjax(Datos){
         success:function(data){
                 ResultadoPOST=data;
                 //AjaxFinalizarIndicadorPeticion();
-            }
-            /*,error: function(XMLHttpRequest, textStatus, errorThrown) {
-                errores(XMLHttpRequest, textStatus);
+            },error:function(XMLHttpRequest,textStatus,errorThrown) {
+                errores(XMLHttpRequest,textStatus);
                 //AjaxFinalizarIndicadorPeticion();
-            },
+            }/*,
             complete: function() {
                 //hideLightbox_loader();
                 //AjaxFinalizarIndicadorPeticion();
             }*/
     });
     return ResultadoPOST;
+}
+function errores(jqXHR,exception){
+    if(jqXHR.responseText!='') {
+        alert('Error Interno');
+        console.log(jqXHR.responseText);
+    }
+    if(jqXHR.status==404){
+        alert('No se ha podido conectar al destino');
+    }
+    else if(jqXHR.status==500){
+        alert('Error interno del servicio');
+    }
+    else if(exception=='parsererror'){}
+    else if(exception=='timeout'){
+        alert('Se ha superado el tiempo de espera');
+    }
+    else if(exception=='abort'){
+        alert('Petición cancelada');
+    }
+    else if(jqXHR.status==405){
+        alert('La peticón no es correcta para dominios externos');
+    }
 }

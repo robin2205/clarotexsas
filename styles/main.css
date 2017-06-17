@@ -7049,15 +7049,62 @@ form{
   color: #000000;
 }
 .coloridoTela{
+  width: 100%;
   height: auto;
 }
 .coloridoTela #adicionarColor{
   display: block;
-  position: absolute;
-  margin-left: 850px;
+  margin-left: 840px;
 }
 .coloridoTela #quitarColor{
   display: block;
   position: absolute;
-  margin-left: 940px;
+  margin-left: 930px;
+}
+.coloridoInsumo{
+  width: 100%;
+  height: auto;
+}
+.coloridoInsumo #adicionarInsumo{
+  display: block;
+  margin-left: 840px;
+}
+.coloridoInsumo #quitarInsumo{
+  display: block;
+  position: absolute;
+  margin-left: 930px;
+}
+
+
+
+
+
+
+
+
+/*=================================================
+DISPOSITIVOS MÓVILES
+=================================================*/
+@media screen and (max-width:800px){
+  form, .form-control{
+    font-size: 14px !important;
+  }
+  .coloridoTela #adicionarColor{
+    display: block;
+    margin-left: -15px;
+  }
+  .coloridoTela #quitarColor{
+    display: block;
+    position: absolute;
+    margin-left: 135px;
+  }
+  .coloridoInsumo #adicionarInsumo{
+    display: block;
+    margin-left: -15px;
+  }
+  .coloridoInsumo #quitarInsumo{
+    display: block;
+    position: absolute;
+    margin-left: 135px;
+  }
 }
