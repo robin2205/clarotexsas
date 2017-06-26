@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-06-2017 a las 11:07:36
+-- Tiempo de generación: 26-06-2017 a las 22:30:50
 -- Versión del servidor: 10.1.21-MariaDB
 -- Versión de PHP: 5.6.30
 
@@ -23,24 +23,36 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `colorestelas`
+-- Estructura de tabla para la tabla `colores`
 --
 
-CREATE TABLE `colorestelas` (
+CREATE TABLE `colores` (
   `id` int(11) NOT NULL,
   `color` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 --
--- Volcado de datos para la tabla `colorestelas`
+-- Volcado de datos para la tabla `colores`
 --
 
-INSERT INTO `colorestelas` (`id`, `color`) VALUES
+INSERT INTO `colores` (`id`, `color`) VALUES
 (1, 'Rojo'),
 (2, 'Azul'),
 (3, 'Verde'),
 (4, 'Estampado Flores'),
 (5, 'Estampado Patos');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `detallescoloresinsumos`
+--
+
+CREATE TABLE `detallescoloresinsumos` (
+  `id` int(11) NOT NULL,
+  `idColor` int(11) NOT NULL,
+  `idInsumo` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -318,10 +330,18 @@ INSERT INTO `usuarios` (`cedula`, `nombre`, `email`, `usuario`, `password`, `per
 --
 
 --
--- Indices de la tabla `colorestelas`
+-- Indices de la tabla `colores`
 --
-ALTER TABLE `colorestelas`
+ALTER TABLE `colores`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `detallescoloresinsumos`
+--
+ALTER TABLE `detallescoloresinsumos`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idColor` (`idColor`),
+  ADD KEY `idInsumo` (`idInsumo`);
 
 --
 -- Indices de la tabla `detallescolorestelas`
@@ -413,10 +433,15 @@ ALTER TABLE `usuarios`
 --
 
 --
--- AUTO_INCREMENT de la tabla `colorestelas`
+-- AUTO_INCREMENT de la tabla `colores`
 --
-ALTER TABLE `colorestelas`
+ALTER TABLE `colores`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT de la tabla `detallescoloresinsumos`
+--
+ALTER TABLE `detallescoloresinsumos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `detallescolorestelas`
 --
@@ -472,11 +497,18 @@ ALTER TABLE `unidaddemedidas`
 --
 
 --
+-- Filtros para la tabla `detallescoloresinsumos`
+--
+ALTER TABLE `detallescoloresinsumos`
+  ADD CONSTRAINT `detallescoloresinsumos_ibfk_1` FOREIGN KEY (`idColor`) REFERENCES `colores` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `detallescoloresinsumos_ibfk_2` FOREIGN KEY (`idInsumo`) REFERENCES `insumos` (`idinsumos`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Filtros para la tabla `detallescolorestelas`
 --
 ALTER TABLE `detallescolorestelas`
   ADD CONSTRAINT `detallescolorestelas_ibfk_1` FOREIGN KEY (`idTela`) REFERENCES `telas` (`idtelas`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `detallescolorestelas_ibfk_2` FOREIGN KEY (`idColor`) REFERENCES `colorestelas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `detallescolorestelas_ibfk_2` FOREIGN KEY (`idColor`) REFERENCES `colores` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `detallesinsumos`

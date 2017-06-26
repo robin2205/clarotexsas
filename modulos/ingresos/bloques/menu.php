@@ -3,8 +3,8 @@
 echo"
     <div id='title-breadcrumb-option-demo' class='page-title-breadcrumb'>
         <div class='page-header pull-left'>
-            <div class='page-title'>
-                Clarotex S.A.S
+            <div class='page-title' id='titulo_modulo'>
+                ".$mod."
             </div>
         </div>
         <ol class='breadcrumb page-breadcrumb pull-right'>

@@ -1,6 +1,4 @@
 <form id="formularioInsumos">
-	<h1>Ingreso de Insumos</h1>
-	<hr>
 	<div class="form-group col-md-12">
 		<label for="descripcionInsumo">Descripción</label>
 		<input type="text" class="form-control" name="descripcionInsumo" id="descripcionInsumo" onkeypress="return validar_textonumero(event)" placeholder="Ingrese la Descripción del Insumo" required autofocus>

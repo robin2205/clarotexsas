@@ -16,9 +16,9 @@ class ConjuntosDAO {
 	}
 
 	#Esta función realiza la conexión con la BD y trae los Colores de las Telas
-	function TraerColoresTelas(){
+	function TraerColores(){
 		$pdo=new ClassPDO();
-		$sql="SELECT * FROM colorestelas";
+		$sql="SELECT * FROM colores ORDER BY color ASC";
 		return $pdo->Consulta($sql,"S","ASSOC");
 	}
 

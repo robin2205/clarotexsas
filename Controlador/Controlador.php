@@ -21,14 +21,13 @@ class MasterControlador{
             break;
 
             case "TraerColoresTelas":
-            $this->TraerColoresTelas();
+            $this->TraerColores();
             break;
 
-
-
-            case "ConsultaPrueba":
-            $this->ConsultaPrueba();
+            case "TraerColoresInsumos":
+            $this->TraerColores();
             break;
+
 
             case "MostrarUsuarios":
             $this->MostrarUsuarios();
@@ -61,11 +60,11 @@ class MasterControlador{
     }
 
     //Esta función va al Módelo, y trae los Colores de las Telas
-    public function TraerColoresTelas() {
+    public function TraerColores() {
         //Las variables ERROR y MENSAJE se establecen para el control de Errores
         $error="N";
         $mensaje="";
-        $Datos=$this->ConjuntosDAO->TraerColoresTelas();
+        $Datos=$this->ConjuntosDAO->TraerColores();
         $return["Error"]=$error;
         $return["Mensaje"]=$mensaje;
         $return["Datos"]=$Datos;
@@ -82,16 +81,6 @@ class MasterControlador{
         $mensaje = "";
         $NombreUser = $_POST["NombreUsuario"];
         $Datos = $this->ConjuntosDAO->MostrarUsuarios($NombreUser);
-        $return["Error"] = $error;
-        $return["Mensaje"] = $mensaje;
-        $return["Datos"] = $Datos;
-        echo json_encode($return);
-    }
-    public function ConsultaPrueba() {
-        //LAS VARIABLES ERROR Y MENSAJE SE ESTABLECEN PARA EL CONTROL DE ERRORES
-        $error = "N";
-        $mensaje = "";
-        $Datos = $this->ConjuntosDAO->ConsultaPrueba();
         $return["Error"] = $error;
         $return["Mensaje"] = $mensaje;
         $return["Datos"] = $Datos;

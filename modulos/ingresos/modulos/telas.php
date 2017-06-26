@@ -1,6 +1,4 @@
 <form id="formularioTelas">
-	<h1>Ingreso de Telas</h1>
-	<hr>
 	<div class="form-group col-md-12">
 		<label for="descripcionTela">Descripción</label>
 		<input type="text" class="form-control" name="descripcionTela" id="descripcionTela" onkeypress="return validar_textonumero(event)" placeholder="Ingrese la Descripción de la Tela" required autofocus>
