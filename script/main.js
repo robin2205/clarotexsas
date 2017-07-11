@@ -208,7 +208,7 @@ $(function () {
                 if (m < 10) m = "0" + m;
                 $obj.val(""); // CLEAR TEXT ON TEXTAREA
 
-                var $element = ""; 
+                var $element = "";
                 $element += "<li>";
                 $element += "<p>";
                 $element += "<img class='avt' src='"+$my_avt+"'>";
@@ -217,7 +217,7 @@ $(function () {
                 $element += "</p>";
                 $element = $element + "<p>" + $content +  "</p>";
                 $element += "</li>";
-                
+
                 $me.append($element);
                 var height = 0;
                 $me.find('li').each(function(i, value){
@@ -226,7 +226,7 @@ $(function () {
 
                 height += '';
                 //alert(height);
-                $me.scrollTop(height);  // add more 400px for #chat-box position      
+                $me.scrollTop(height);  // add more 400px for #chat-box position
 
                 // RANDOM RESPOND CHAT
 
@@ -241,7 +241,7 @@ $(function () {
                 $res += "</li>";
                 setTimeout(function(){
                     $me.append($res);
-                    $me.scrollTop(height+100); // add more 500px for #chat-box position             
+                    $me.scrollTop(height+100); // add more 500px for #chat-box position
                 }, 1000);
             }
         }
@@ -303,12 +303,12 @@ $(function () {
     });
     //END CHECKBOX TABLE
 
-    //BEGIN JQUERY NEWS UPDATE
+    /*BEGIN JQUERY NEWS UPDATE
     $('#news-update').ticker({
         controls: false,
         titleText: ''
     });
-    //END JQUERY NEWS UPDATE
+    //END JQUERY NEWS UPDATE*/
 
     $('.option-demo').hover(function() {
         $(this).append("<div class='demo-layout animated fadeInUp'><i class='fa fa-magic mrs'></i>Demo</div>");

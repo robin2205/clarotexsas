@@ -1,5 +1,5 @@
 <?php
-include_once str_replace("/Controlador", "", $absolute_path) . '/Modelo/Conexion/ClassPDO.php';
+include_once str_replace("/Controlador","",$absolute_path).'/Modelo/Conexion/ClassPDO.php';
 class ConjuntosDAO {
 	#Esta función realiza la conexión con la BD y trae las Unidades de Medidas
 	function TraerUMedidas(){
@@ -22,18 +22,24 @@ class ConjuntosDAO {
 		return $pdo->Consulta($sql,"S","ASSOC");
 	}
 
-
-	#
-	function ConsultaPrueba() {
-		$pdo = new ClassPDO();
-		$sql = "SELECT * FROM tipoinventario INNER JOIN detallestelas ON tipoinventario.idtipoInventario=detallestelas.idTipo WHERE tipoinventario.idtipoInventario='T'";
-		return $pdo->Consulta($sql, "S", "ASSOC");
+	#Esta función realiza la conexión con la BD y trae los Tipos de Inventario
+	function TraerTipos(){
+		$pdo=new ClassPDO();
+		$sql="SELECT * FROM tipoinventario";
+		return $pdo->Consulta($sql,"S","ASSOC");
 	}
 
-	#
-	function MostrarUsuarios($Nombre) {
+	function GuardarTela($referencia,$descripcion,$costo,$unidad,$ancho,$rendimiento,$tipoI,$estado,$colores,$cantidades,$arregloColores,$arregloCantidades){
+		error_log(print_r($arregloColores,1),0);
 		$pdo=new ClassPDO();
-		$sql="SELECT * FROM usuarios WHERE usuario = '$Nombre'";
-		return $pdo->Consulta($sql, "S", "ASSOC");
+		/*ORDEN DE EJECUCIÓN
+		1. Guardar tela
+		2. Guardar Inventario
+		3. Capturar último dato guardado de tela
+		4. Capturar último dato guardado de Inventario
+		5. Guardar en detallestelas
+		6. Guardar colores*/
+		$sql="CALL sp_InsertarTelas('$referencia','$descripcion',$costo,$unidad,$ancho,$rendimiento,'$tipoI',$estado)";
+		$pdo->Ejecutar($sql);
 	}
 }
