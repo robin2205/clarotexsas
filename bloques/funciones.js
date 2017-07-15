@@ -160,8 +160,8 @@ function TraerColoresInsumos(contador) {
 //Esta función se encarga de guardar los inventarios de telas
 function GuardarTelas(){
     if($("#descripcionTela").val()!="" && $("#costoTela").val()!="" && $("#unidadTela").val()!="" && $("#anchoTela").val()!="" && $("#tipoTela").val()!="" && $("#estadoTela").val()!=""){
-        var colores = new Array();
-        var cantidades = new Array();
+        var colores=new Array();
+        var cantidades=new Array();
         //Creamos un array para guardar los colores
         colores[0]=[cont-1];
         cantidades[0]=[cont-1];
@@ -179,6 +179,8 @@ function GuardarTelas(){
         rendimiento=$("#rendimientoTela").val();
         tipoI=$("#tipoTela").val();
         estado=$("#estadoTela").val();
+        if(rendimiento==""){
+            rendimiento=0;}
         /*INSERTAMOS LOS DATOS EN EL OBJETO*/
         DatosGuardar["descripcion"]=descripcion;
         DatosGuardar["costo"]=costo;
@@ -192,8 +194,8 @@ function GuardarTelas(){
         DatosGuardar["ConfigAjax"]=['POST','RespuestaAjax.php?mod=master&cmd=GuardarTela','false'];
         Resultado=PeticionAjax(DatosGuardar);
         if(Resultado!=false && Resultado!=''){
-            console.log(Resultado.Datos);
-            alert(Resultado.Datos);
+            console.log(Resultado.Datos[0]);
+            alert(Resultado.Datos[0]);
         }
     }
 }

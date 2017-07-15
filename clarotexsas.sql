@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-06-2017 a las 22:30:50
+-- Tiempo de generación: 15-07-2017 a las 03:26:36
 -- Versión del servidor: 10.1.21-MariaDB
 -- Versión de PHP: 5.6.30
 
@@ -19,6 +19,34 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `clarotexsas`
 --
+
+DELIMITER $$
+--
+-- Procedimientos
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_InsertarDetColorTelas` (IN `_idtela` INT, IN `_idcolor` INT, IN `_idinv` INT)  BEGIN
+INSERT INTO detallescolorestelas(idTela,idColor,idInventario) VALUES(_idtela,_idcolor,_idinv);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_InsertarInvTelas` (IN `_cantidad` DOUBLE, IN `_disponible` DOUBLE)  BEGIN
+INSERT INTO inventariotelas(cantidad,disponible) VALUES(_cantidad,_disponible);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_InsertarTelas` (IN `_referencia` VARCHAR(7), IN `_descripcion` TEXT, IN `_costo` DOUBLE, IN `_unidad` INT, IN `_ancho` DOUBLE, IN `_rendimiento` DOUBLE, IN `_tipoI` CHAR(1), IN `_estado` INT)  BEGIN
+
+DECLARE UltimoRegistro INT;
+
+INSERT INTO telas(referencia,descripcion,costo) VALUES(_referencia,_descripcion,_costo);
+
+SET UltimoRegistro=(SELECT MAX(idtelas) FROM telas);
+
+INSERT INTO detallestelas(idTipo,idTela,idUniMedida,idEstado,rendimiento,ancho) VALUES(_tipoI,UltimoRegistro,_unidad,_estado,_rendimiento,_ancho);
+
+SELECT UltimoRegistro;
+
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -51,7 +79,8 @@ INSERT INTO `colores` (`id`, `color`) VALUES
 CREATE TABLE `detallescoloresinsumos` (
   `id` int(11) NOT NULL,
   `idColor` int(11) NOT NULL,
-  `idInsumo` int(11) NOT NULL
+  `idInsumo` int(11) NOT NULL,
+  `idInventarioI` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -63,7 +92,8 @@ CREATE TABLE `detallescoloresinsumos` (
 CREATE TABLE `detallescolorestelas` (
   `id` int(11) NOT NULL,
   `idTela` int(11) NOT NULL,
-  `idColor` int(11) NOT NULL
+  `idColor` int(11) NOT NULL,
+  `idInventario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -77,25 +107,10 @@ CREATE TABLE `detallesinsumos` (
   `idTipo` char(1) NOT NULL,
   `idInsumo` int(11) NOT NULL,
   `idUniMedida` int(11) NOT NULL,
-  `idInventario` int(11) NOT NULL,
   `idEstado` int(11) NOT NULL,
   `color` varchar(15) DEFAULT NULL,
   `talla` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Volcado de datos para la tabla `detallesinsumos`
---
-
-INSERT INTO `detallesinsumos` (`iddetallesInsumos`, `idTipo`, `idInsumo`, `idUniMedida`, `idInventario`, `idEstado`, `color`, `talla`) VALUES
-(1, 'I', 1, 1, 1, 1, 'Transparente', NULL),
-(2, 'I', 2, 2, 2, 2, 'Gris', NULL),
-(3, 'I', 3, 1, 3, 1, NULL, NULL),
-(4, 'I', 4, 1, 4, 1, NULL, '02'),
-(5, 'I', 4, 1, 5, 1, NULL, '04'),
-(6, 'I', 4, 1, 6, 1, NULL, '06'),
-(7, 'I', 4, 1, 7, 1, NULL, '08'),
-(8, 'I', 4, 1, 8, 1, NULL, '10');
 
 -- --------------------------------------------------------
 
@@ -108,7 +123,6 @@ CREATE TABLE `detallestelas` (
   `idTipo` char(1) NOT NULL,
   `idTela` int(11) NOT NULL,
   `idUniMedida` int(11) NOT NULL,
-  `idInventario` int(11) NOT NULL,
   `idEstado` int(11) NOT NULL,
   `rendimiento` double DEFAULT NULL,
   `ancho` double DEFAULT NULL
@@ -118,11 +132,22 @@ CREATE TABLE `detallestelas` (
 -- Volcado de datos para la tabla `detallestelas`
 --
 
-INSERT INTO `detallestelas` (`iddetallesTelas`, `idTipo`, `idTela`, `idUniMedida`, `idInventario`, `idEstado`, `rendimiento`, `ancho`) VALUES
-(1, 'T', 1, 3, 1, 1, 3.5, 1.62),
-(2, 'T', 2, 2, 2, 2, NULL, 1.7),
-(3, 'T', 3, 3, 3, 1, 3.2, 1.65),
-(4, 'T', 4, 2, 4, 1, NULL, 1.58);
+INSERT INTO `detallestelas` (`iddetallesTelas`, `idTipo`, `idTela`, `idUniMedida`, `idEstado`, `rendimiento`, `ancho`) VALUES
+(1, 'T', 1, 3, 2, 3.5, 1.6),
+(2, 'T', 2, 3, 1, 3.5, 1.6),
+(3, 'T', 3, 3, 2, 3.5, 1.6),
+(4, 'T', 4, 3, 1, 3.5, 1.6),
+(5, 'T', 5, 3, 1, 3.5, 1.6),
+(6, 'T', 6, 2, 2, 0, 1.6),
+(7, 'T', 7, 3, 2, 3.5, 1.6),
+(8, 'T', 8, 2, 1, 0, 1.6),
+(9, 'T', 9, 3, 2, 3.5, 1.6),
+(10, 'T', 10, 3, 2, 3.5, 1.6),
+(11, 'T', 11, 3, 2, 3.5, 1.6),
+(12, 'I', 12, 2, 6, 0, 1.6),
+(13, 'I', 13, 2, 1, 0, 1.6),
+(14, 'T', 14, 2, 1, 0, 1.6),
+(15, 'T', 15, 2, 3, 0, 1.6);
 
 -- --------------------------------------------------------
 
@@ -162,16 +187,6 @@ CREATE TABLE `insumos` (
   `costo` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Volcado de datos para la tabla `insumos`
---
-
-INSERT INTO `insumos` (`idinsumos`, `referencia`, `descripcion`, `costo`) VALUES
-(1, 'I000001', 'Botón marcado Bronzini', 9),
-(2, 'I000002', 'Hiladilla 10MM Algogón/Poliester', 150),
-(3, 'I000003', 'Etiqueta Marca Bronzini Niñas', 35),
-(4, 'I000004', 'Marquilla Logo Bronzini Niñas', 42);
-
 -- --------------------------------------------------------
 
 --
@@ -183,20 +198,6 @@ CREATE TABLE `inventarioinsumos` (
   `cantidad` double DEFAULT NULL,
   `disponible` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Volcado de datos para la tabla `inventarioinsumos`
---
-
-INSERT INTO `inventarioinsumos` (`idinventarioInsumos`, `cantidad`, `disponible`) VALUES
-(1, 600, 600),
-(2, 450, 450),
-(3, 3220, 3220),
-(4, 220, 220),
-(5, 440, 440),
-(6, 912, 912),
-(7, 833, 833),
-(8, 445, 445);
 
 -- --------------------------------------------------------
 
@@ -215,10 +216,12 @@ CREATE TABLE `inventariotelas` (
 --
 
 INSERT INTO `inventariotelas` (`idinventarioTelas`, `cantidad`, `disponible`) VALUES
-(1, 800, 800),
-(2, 1300, 1300),
-(3, 400, 400),
-(4, 900, 900);
+(1, 20, 20),
+(2, 10, 10),
+(3, 20, 20),
+(4, 10, 10),
+(5, 30, 30),
+(6, 20, 20);
 
 -- --------------------------------------------------------
 
@@ -258,10 +261,21 @@ CREATE TABLE `telas` (
 --
 
 INSERT INTO `telas` (`idtelas`, `referencia`, `descripcion`, `costo`) VALUES
-(1, 'T000001', 'Lycra Minotauro Fondo Entero', 19000),
-(2, 'T000002', 'Franela Tania', 5800),
-(3, 'T000003', 'Lycra Centauro F/E', 21000),
-(4, 'T000004', 'Burda Sueños', 6500);
+(1, 'ABC0001', 'Minotauro', 21000),
+(2, '5IIDPIC', 'Minotauro', 21000),
+(3, 'F0WXSJ2', 'Minotauro', 21000),
+(4, 'GYF6ZQ9', 'Minotauro', 21000),
+(5, 'IHK0GWI', 'Minotauro', 21000),
+(6, 'SV76H4T', 'Minotauro', 1231321),
+(7, '0UT4V4L', 'Minotauro', 21000),
+(8, '04C2FE3', 'Minotauro', 21000),
+(9, 'AAA001', 'Minotauro', 21000),
+(10, '3YAWFMA', 'Minotauro', 21000),
+(11, 'KRC6P3X', 'Minotauro', 21000),
+(12, 'I9NBY03', 'Minotauro', 21000),
+(13, 'CD9WJ8V', 'Minotauro', 21000),
+(14, 'MKB5TI7', 'Minotauro', 21000),
+(15, '7S0YLH4', 'Minotauro', 21000);
 
 -- --------------------------------------------------------
 
@@ -341,7 +355,8 @@ ALTER TABLE `colores`
 ALTER TABLE `detallescoloresinsumos`
   ADD PRIMARY KEY (`id`),
   ADD KEY `idColor` (`idColor`),
-  ADD KEY `idInsumo` (`idInsumo`);
+  ADD KEY `idInsumo` (`idInsumo`),
+  ADD KEY `idInventarioI` (`idInventarioI`);
 
 --
 -- Indices de la tabla `detallescolorestelas`
@@ -349,7 +364,8 @@ ALTER TABLE `detallescoloresinsumos`
 ALTER TABLE `detallescolorestelas`
   ADD PRIMARY KEY (`id`),
   ADD KEY `idInsumo` (`idTela`),
-  ADD KEY `idColor` (`idColor`);
+  ADD KEY `idColor` (`idColor`),
+  ADD KEY `idInventario` (`idInventario`);
 
 --
 -- Indices de la tabla `detallesinsumos`
@@ -359,7 +375,6 @@ ALTER TABLE `detallesinsumos`
   ADD KEY `idTipoI_idx` (`idTipo`),
   ADD KEY `idInsumoI_idx` (`idInsumo`),
   ADD KEY `idUniMedidaI_idx` (`idUniMedida`),
-  ADD KEY `idInventarioI_idx` (`idInventario`),
   ADD KEY `idEstadoI_idx1` (`idEstado`);
 
 --
@@ -370,7 +385,6 @@ ALTER TABLE `detallestelas`
   ADD KEY `idTela_idx` (`idTela`),
   ADD KEY `idTipo_idx` (`idTipo`),
   ADD KEY `idUniMedida_idx` (`idUniMedida`),
-  ADD KEY `idInventario_idx` (`idInventario`),
   ADD KEY `idEstado_idx` (`idEstado`);
 
 --
@@ -451,12 +465,12 @@ ALTER TABLE `detallescolorestelas`
 -- AUTO_INCREMENT de la tabla `detallesinsumos`
 --
 ALTER TABLE `detallesinsumos`
-  MODIFY `iddetallesInsumos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `iddetallesInsumos` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `detallestelas`
 --
 ALTER TABLE `detallestelas`
-  MODIFY `iddetallesTelas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `iddetallesTelas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 --
 -- AUTO_INCREMENT de la tabla `estados`
 --
@@ -466,17 +480,17 @@ ALTER TABLE `estados`
 -- AUTO_INCREMENT de la tabla `insumos`
 --
 ALTER TABLE `insumos`
-  MODIFY `idinsumos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idinsumos` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `inventarioinsumos`
 --
 ALTER TABLE `inventarioinsumos`
-  MODIFY `idinventarioInsumos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `idinventarioInsumos` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `inventariotelas`
 --
 ALTER TABLE `inventariotelas`
-  MODIFY `idinventarioTelas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idinventarioTelas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT de la tabla `perfiles`
 --
@@ -486,7 +500,7 @@ ALTER TABLE `perfiles`
 -- AUTO_INCREMENT de la tabla `telas`
 --
 ALTER TABLE `telas`
-  MODIFY `idtelas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idtelas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 --
 -- AUTO_INCREMENT de la tabla `unidaddemedidas`
 --
@@ -501,14 +515,16 @@ ALTER TABLE `unidaddemedidas`
 --
 ALTER TABLE `detallescoloresinsumos`
   ADD CONSTRAINT `detallescoloresinsumos_ibfk_1` FOREIGN KEY (`idColor`) REFERENCES `colores` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `detallescoloresinsumos_ibfk_2` FOREIGN KEY (`idInsumo`) REFERENCES `insumos` (`idinsumos`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `detallescoloresinsumos_ibfk_2` FOREIGN KEY (`idInsumo`) REFERENCES `insumos` (`idinsumos`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `detallescoloresinsumos_ibfk_3` FOREIGN KEY (`idInventarioI`) REFERENCES `inventarioinsumos` (`idinventarioInsumos`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `detallescolorestelas`
 --
 ALTER TABLE `detallescolorestelas`
   ADD CONSTRAINT `detallescolorestelas_ibfk_1` FOREIGN KEY (`idTela`) REFERENCES `telas` (`idtelas`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `detallescolorestelas_ibfk_2` FOREIGN KEY (`idColor`) REFERENCES `colores` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `detallescolorestelas_ibfk_2` FOREIGN KEY (`idColor`) REFERENCES `colores` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `detallescolorestelas_ibfk_3` FOREIGN KEY (`idInventario`) REFERENCES `inventariotelas` (`idinventarioTelas`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `detallesinsumos`
@@ -516,7 +532,6 @@ ALTER TABLE `detallescolorestelas`
 ALTER TABLE `detallesinsumos`
   ADD CONSTRAINT `idEstadoI` FOREIGN KEY (`idEstado`) REFERENCES `estados` (`idestados`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `idInsumoI` FOREIGN KEY (`idInsumo`) REFERENCES `insumos` (`idinsumos`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `idInventarioI` FOREIGN KEY (`idInventario`) REFERENCES `inventarioinsumos` (`idinventarioInsumos`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `idTipoI` FOREIGN KEY (`idTipo`) REFERENCES `tipoinventario` (`idtipoInventario`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `idUniMedidaI` FOREIGN KEY (`idUniMedida`) REFERENCES `unidaddemedidas` (`idunidaddeMedidas`) ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -525,7 +540,6 @@ ALTER TABLE `detallesinsumos`
 --
 ALTER TABLE `detallestelas`
   ADD CONSTRAINT `idEstado` FOREIGN KEY (`idEstado`) REFERENCES `estados` (`idestados`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `idInventario` FOREIGN KEY (`idInventario`) REFERENCES `inventariotelas` (`idinventarioTelas`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `idTela` FOREIGN KEY (`idTela`) REFERENCES `telas` (`idtelas`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `idTipo` FOREIGN KEY (`idTipo`) REFERENCES `tipoinventario` (`idtipoInventario`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `idUniMedida` FOREIGN KEY (`idUniMedida`) REFERENCES `unidaddemedidas` (`idunidaddeMedidas`) ON DELETE CASCADE ON UPDATE CASCADE;

@@ -15,12 +15,6 @@ class ClassPDO {
         }
     }
 
-    /*public function Consultar($Qry) {
-    $dbh = conectarPDO_MYSQL($BaseDatos);
-    $sql = $dbh->prepare($Qry);
-    $sql->execute();
-    return $sql->fetchAll(PDO::FETCH_ASSOC);
-    }*/
     /*ESTA FUNCION NO RETORNA*/
     public function Ejecutar($sql){
         $row=$this->Consulta($sql,'N','ASSOC');
@@ -31,5 +25,4 @@ class ClassPDO {
         $row=$this->Consulta($sql,'N','ASSOC');
         return $row;
     }
-
 }
