@@ -17,12 +17,12 @@ class ClassPDO {
 
     /*ESTA FUNCION NO RETORNA*/
     public function Ejecutar($sql){
-        $row=$this->Consulta($sql,'N','ASSOC');
+        $row=$this->Consulta($sql,'N','ASSOC','N');
         return $row;
     }
 
     public function getId($table,$field,$where) {
-        $row=$this->Consulta($sql,'N','ASSOC');
+        $row=$this->Consulta($sql,'N','ASSOC','N');
         return $row;
     }
 }

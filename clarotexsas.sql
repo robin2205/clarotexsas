@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-07-2017 a las 03:26:36
+-- Tiempo de generación: 19-07-2017 a las 01:23:06
 -- Versión del servidor: 10.1.21-MariaDB
 -- Versión de PHP: 5.6.30
 
@@ -41,8 +41,6 @@ INSERT INTO telas(referencia,descripcion,costo) VALUES(_referencia,_descripcion,
 SET UltimoRegistro=(SELECT MAX(idtelas) FROM telas);
 
 INSERT INTO detallestelas(idTipo,idTela,idUniMedida,idEstado,rendimiento,ancho) VALUES(_tipoI,UltimoRegistro,_unidad,_estado,_rendimiento,_ancho);
-
-SELECT UltimoRegistro;
 
 END$$
 
@@ -96,6 +94,18 @@ CREATE TABLE `detallescolorestelas` (
   `idInventario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Volcado de datos para la tabla `detallescolorestelas`
+--
+
+INSERT INTO `detallescolorestelas` (`id`, `idTela`, `idColor`, `idInventario`) VALUES
+(1, 1, 2, 1),
+(2, 1, 1, 2),
+(3, 1, 3, 3),
+(4, 2, 2, 4),
+(5, 2, 1, 5),
+(6, 3, 4, 6);
+
 -- --------------------------------------------------------
 
 --
@@ -135,19 +145,7 @@ CREATE TABLE `detallestelas` (
 INSERT INTO `detallestelas` (`iddetallesTelas`, `idTipo`, `idTela`, `idUniMedida`, `idEstado`, `rendimiento`, `ancho`) VALUES
 (1, 'T', 1, 3, 2, 3.5, 1.6),
 (2, 'T', 2, 3, 1, 3.5, 1.6),
-(3, 'T', 3, 3, 2, 3.5, 1.6),
-(4, 'T', 4, 3, 1, 3.5, 1.6),
-(5, 'T', 5, 3, 1, 3.5, 1.6),
-(6, 'T', 6, 2, 2, 0, 1.6),
-(7, 'T', 7, 3, 2, 3.5, 1.6),
-(8, 'T', 8, 2, 1, 0, 1.6),
-(9, 'T', 9, 3, 2, 3.5, 1.6),
-(10, 'T', 10, 3, 2, 3.5, 1.6),
-(11, 'T', 11, 3, 2, 3.5, 1.6),
-(12, 'I', 12, 2, 6, 0, 1.6),
-(13, 'I', 13, 2, 1, 0, 1.6),
-(14, 'T', 14, 2, 1, 0, 1.6),
-(15, 'T', 15, 2, 3, 0, 1.6);
+(3, 'T', 3, 2, 1, 0, 1.6);
 
 -- --------------------------------------------------------
 
@@ -218,10 +216,10 @@ CREATE TABLE `inventariotelas` (
 INSERT INTO `inventariotelas` (`idinventarioTelas`, `cantidad`, `disponible`) VALUES
 (1, 20, 20),
 (2, 10, 10),
-(3, 20, 20),
+(3, 25, 25),
 (4, 10, 10),
 (5, 30, 30),
-(6, 20, 20);
+(6, 30, 30);
 
 -- --------------------------------------------------------
 
@@ -261,21 +259,9 @@ CREATE TABLE `telas` (
 --
 
 INSERT INTO `telas` (`idtelas`, `referencia`, `descripcion`, `costo`) VALUES
-(1, 'ABC0001', 'Minotauro', 21000),
-(2, '5IIDPIC', 'Minotauro', 21000),
-(3, 'F0WXSJ2', 'Minotauro', 21000),
-(4, 'GYF6ZQ9', 'Minotauro', 21000),
-(5, 'IHK0GWI', 'Minotauro', 21000),
-(6, 'SV76H4T', 'Minotauro', 1231321),
-(7, '0UT4V4L', 'Minotauro', 21000),
-(8, '04C2FE3', 'Minotauro', 21000),
-(9, 'AAA001', 'Minotauro', 21000),
-(10, '3YAWFMA', 'Minotauro', 21000),
-(11, 'KRC6P3X', 'Minotauro', 21000),
-(12, 'I9NBY03', 'Minotauro', 21000),
-(13, 'CD9WJ8V', 'Minotauro', 21000),
-(14, 'MKB5TI7', 'Minotauro', 21000),
-(15, '7S0YLH4', 'Minotauro', 21000);
+(1, 'GOQX8Y1', 'Minotauro', 21000),
+(2, 'BU4F639', 'Centauro', 24500),
+(3, '6V6CCKV', 'Hawai', 4000);
 
 -- --------------------------------------------------------
 
@@ -460,7 +446,7 @@ ALTER TABLE `detallescoloresinsumos`
 -- AUTO_INCREMENT de la tabla `detallescolorestelas`
 --
 ALTER TABLE `detallescolorestelas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT de la tabla `detallesinsumos`
 --
@@ -470,7 +456,7 @@ ALTER TABLE `detallesinsumos`
 -- AUTO_INCREMENT de la tabla `detallestelas`
 --
 ALTER TABLE `detallestelas`
-  MODIFY `iddetallesTelas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `iddetallesTelas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `estados`
 --
@@ -500,7 +486,7 @@ ALTER TABLE `perfiles`
 -- AUTO_INCREMENT de la tabla `telas`
 --
 ALTER TABLE `telas`
-  MODIFY `idtelas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `idtelas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `unidaddemedidas`
 --

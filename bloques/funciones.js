@@ -194,8 +194,7 @@ function GuardarTelas(){
         DatosGuardar["ConfigAjax"]=['POST','RespuestaAjax.php?mod=master&cmd=GuardarTela','false'];
         Resultado=PeticionAjax(DatosGuardar);
         if(Resultado!=false && Resultado!=''){
-            console.log(Resultado.Datos[0]);
-            alert(Resultado.Datos[0]);
+            alert(Resultado.Datos);
         }
     }
 }

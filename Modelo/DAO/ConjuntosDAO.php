@@ -30,26 +30,28 @@ class ConjuntosDAO {
 	}
 
 	function GuardarTela($referencia,$descripcion,$costo,$unidad,$ancho,$rendimiento,$tipoI,$estado,$colores,$cantidades){
-		//error_log(print_r($colores,1),0);
 		$pdo=new ClassPDO();
 		$sql="CALL sp_InsertarTelas('$referencia','$descripcion',$costo,$unidad,$ancho,$rendimiento,'$tipoI',$estado)";
-		$id["Datos"]=json_encode($pdo->Consulta($sql,"S","ASSOC"));
-		//$pdo["Datos"]=$Datos;
-		error_log($id["Datos"],0);
-		break;
+		$pdo->Ejecutar($sql);
+		#Seleccionamos el último idVenta que se generó
+		$sql2="SELECT MAX(idtelas) AS id FROM telas";
+		$respuesta=$pdo->Consulta($sql2);
+		$idVenta=$respuesta[0]["id"];
 		#Hallamos la cantidad de colores y cantidades a guardar
 		$conteo=count($colores);
-		#Hallamos el último id de tela guardado
-		$sql2="SELECT MAX(idtelas) AS id FROM telas";
-		$id=json_encode($pdo->Consulta($sql2));
-		error_log(print_r($id,1),0);
-		// for($i=0;$i<$conteo;$i++){
-		// 	$sql3="CALL sp_InsertarInvTelas('$cantidades[$i]','$cantidades[$i]')";
-		// 	$pdo->Ejecutar($sql3);
-		// 	$sql4="SELECT MAX(idinventarioTelas) FROM inventariotelas";
-		// 	$idInv=$pdo->Consulta($sql4,"S","ASSOC");
-		// 	$sql5="CALL sp_InsertarDetColorTelas($id[0],$colores[$i],$idInv[0])";
-		// 	$pdo->Ejecutar($sql5);
-		// }
+		for($i=0;$i<$conteo;$i++){
+			#Guardamos el Inventario de Telas
+			$sql3="CALL sp_InsertarInvTelas('$cantidades[$i]','$cantidades[$i]')";
+			$pdo->Ejecutar($sql3);
+			#Seleccionamos el idInventario que se guardó
+			$sql4="SELECT MAX(idinventarioTelas) AS idInv FROM inventariotelas";
+			$respuesta2=$pdo->Consulta($sql4);
+			$idInventario=$respuesta2[0]["idInv"];
+			#Guardamos el color con el inventario asignado
+			$sql5="CALL sp_InsertarDetColorTelas($idVenta,$colores[$i],$idInventario)";
+			$pdo->Ejecutar($sql5);
+		}
+		$mensaje="La información se guardó Adecuadamente";
+		return $mensaje;
 	}
 }

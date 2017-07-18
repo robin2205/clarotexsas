@@ -107,7 +107,6 @@ class MasterControlador{
         $estado=$_POST["estado"];
         $arregloColores=$_POST['colores'];
         $arregloCantidades=$_POST['cantidades'];
-        // error_log(print_r($_POST,1),0);
         $Datos=$this->ConjuntosDAO->GuardarTela($referencia,$descripcion,$costo,$unidad,$ancho,$rendimiento,$tipoI,$estado,$arregloColores,$arregloCantidades);
         $return["Error"]=$error;
         $return["Mensaje"]=$mensaje;
